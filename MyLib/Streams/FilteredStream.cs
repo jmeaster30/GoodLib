@@ -1,4 +1,4 @@
-namespace GoodLib.Streams;
+namespace MyLib.Streams;
 
 public class FilteredStream : Stream
 {

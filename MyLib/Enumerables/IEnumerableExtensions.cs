@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace GoodLib.Enumerables;
+namespace MyLib.Enumerables;
 
 public static class EnumerableExtensions {
     public static IEnumerable<T> PadRight<T>(this IEnumerable<T> a, int amount, T value)

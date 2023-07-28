@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace GoodLib.Test;
+namespace MyLib.Test;
 
 public class UnitTest1
 {

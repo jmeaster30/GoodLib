@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodLib", "GoodLib\GoodLib.csproj", "{F701CAA4-A0B7-4CEB-B766-2F96727C4023}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLib", "MyLib\MyLib.csproj", "{F701CAA4-A0B7-4CEB-B766-2F96727C4023}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodLib.Test", "GoodLib.Test\GoodLib.Test.csproj", "{21AE7B6E-16A4-43BC-B39E-1B2AAD26FE61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLib.Test", "MyLib.Test\MyLib.Test.csproj", "{21AE7B6E-16A4-43BC-B39E-1B2AAD26FE61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

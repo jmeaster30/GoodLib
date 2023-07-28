@@ -1,3 +1,3 @@
-# GoodLib
+# MyLib
 
-A C# library with some random stuff in it
+My C# library with some random stuff in it

@@ -1,4 +1,4 @@
-namespace GoodLib.Numbers;
+namespace MyLib.Numbers;
 
 public static class NumberExtensions
 {

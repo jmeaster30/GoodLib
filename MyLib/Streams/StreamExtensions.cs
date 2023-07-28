@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace GoodLib.Streams;
+namespace MyLib.Streams;
 
 public static class StreamExtensions
 {

@@ -1,4 +1,4 @@
-namespace GoodLib.DatesAndTimes;
+namespace MyLib.DatesAndTimes;
 
 public static class DateTimeExtensions
 {
