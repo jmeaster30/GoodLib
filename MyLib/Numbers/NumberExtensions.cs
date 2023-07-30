@@ -21,4 +21,14 @@ public static class NumberExtensions
     {
         return (int) Math.Ceiling(value);
     }
+
+    public static int Min(this int a, int b)
+    {
+        return Math.Min(a, b);
+    }
+    
+    public static int Max(this int a, int b)
+    {
+        return Math.Max(a, b);
+    }
 }

@@ -3,24 +3,36 @@ using Xunit;
 
 namespace MyLib.Test.Compression;
 
-public class ZlibTests
+public class Lz77Tests
 {
     [Fact]
     public void Test1()
     {
-        CompressionTestHelpers.TestFilter(new Zlib(), "this is a test of the lzw filter");
+        CompressionTestHelpers.TestFilter(new Lz77
+        {
+            LookaheadSize = 32,
+            DictionarySize = 128,
+        }, "this is a test of the lz77 filter");
     }
     
     [Fact]
     public void Test2()
     {
-        CompressionTestHelpers.TestFilter(new Zlib(), "this?");
+        CompressionTestHelpers.TestFilter(new Lz77
+        {
+            LookaheadSize = 32,
+            DictionarySize = 128,
+        }, "this?");
     }
 
     [Fact]
     public void Test3()
     {
-        CompressionTestHelpers.TestFilter(new Zlib(), @"
+        CompressionTestHelpers.TestFilter(new Lz77
+        {
+            LookaheadSize = 32,
+            DictionarySize = 128,
+        }, @"
 Project Gutenberg's Frankenstein, by Mary Wollstonecraft (Godwin) Shelley
 
 This eBook is for the use of anyone anywhere at no cost and with
