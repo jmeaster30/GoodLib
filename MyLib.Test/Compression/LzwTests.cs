@@ -8,19 +8,19 @@ public class LzwTests
     [Fact]
     public void Test1()
     {
-        CompressionTestHelpers.TestFilter(new Lzw(new LzwParameters()), "this is a test of the lzw filter");
+        CompressionTestHelpers.TestFilter(new Lzw(), "this is a test of the lzw filter");
     }
     
     [Fact]
     public void Test2()
     {
-        CompressionTestHelpers.TestFilter(new Lzw(new LzwParameters()), "this?");
+        CompressionTestHelpers.TestFilter(new Lzw(), "this?");
     }
     
     [Fact]
     public void Test3()
     {
-        CompressionTestHelpers.TestFilter(new Lzw(new LzwParameters()), @"
+        CompressionTestHelpers.TestFilter(new Lzw(), @"
 Project Gutenberg's Frankenstein, by Mary Wollstonecraft (Godwin) Shelley
 
 This eBook is for the use of anyone anywhere at no cost and with
