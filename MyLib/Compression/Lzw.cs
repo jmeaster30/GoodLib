@@ -3,36 +3,29 @@ using MyLib.Enumerables;
 
 namespace MyLib.Compression;
 
-public class LzwParameters
+public class Lzw : ICompressionAlgorithm
 {
+    // FIXME actually utilize this parameters :)
     public int Predictor { get; set; } = 1;
     public int Colors { get; set; } = 1;
     public int BitsPerComponent { get; set; } = 8;
     public int Columns { get; set; } = 1;
     public int EarlyChange { get; set; } = 1;
-}
-
-public class Lzw : ICompressionAlgorithm
-{
-    // FIXME actually utilize this parameters :)
-    private LzwParameters LzwParameters { get; } = new();
 
     private Dictionary<ulong, int> codewords { get; set; } = new();
     private Dictionary<int, IEnumerable<byte>> values { get; set; } = new();
 
-    public Lzw(LzwParameters parameters)
+    public Lzw()
     {
-        if (parameters == null) return;
-        if (parameters.Predictor is not (1 or 2 or 10 or 11 or 12 or 13 or 14 or 15))
-            throw new ArgumentOutOfRangeException(nameof(parameters.Predictor), "Predictor should be 1, 2, 10, 11, 12, 13, 14, or 15.");
-        if (parameters.Colors < 1)
-            throw new ArgumentOutOfRangeException(nameof(parameters.Colors), "Colors must be greater than or equal to 1.");
-        if (parameters.BitsPerComponent is not (1 or 2 or 4 or 8 or 16))
-            throw new ArgumentOutOfRangeException(nameof(parameters.BitsPerComponent),
-                "BitsPerComponent must be 1, 2, 4, 8, or 16.");
-        if (parameters.EarlyChange is not 1 and not 2)
-            throw new ArgumentOutOfRangeException(nameof(parameters.EarlyChange), "EarlyChange must be 0 or 1.");
-        LzwParameters = parameters;
+        //if (parameters.Predictor is not (1 or 2 or 10 or 11 or 12 or 13 or 14 or 15))
+        //    throw new ArgumentOutOfRangeException(nameof(parameters.Predictor), "Predictor should be 1, 2, 10, 11, 12, 13, 14, or 15.");
+        //if (parameters.Colors < 1)
+        //    throw new ArgumentOutOfRangeException(nameof(parameters.Colors), "Colors must be greater than or equal to 1.");
+        //if (parameters.BitsPerComponent is not (1 or 2 or 4 or 8 or 16))
+        //    throw new ArgumentOutOfRangeException(nameof(parameters.BitsPerComponent),
+        //        "BitsPerComponent must be 1, 2, 4, 8, or 16.");
+        //if (parameters.EarlyChange is not 1 and not 2)
+        //    throw new ArgumentOutOfRangeException(nameof(parameters.EarlyChange), "EarlyChange must be 0 or 1.");
     }
 
     private int GetCodeword(IEnumerable<byte> input)

@@ -1,5 +1,5 @@
 using System.Collections;
-using MyLib.Numbers;
+using MyLib.Math;
 
 namespace MyLib.Enumerables;
 

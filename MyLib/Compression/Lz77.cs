@@ -1,6 +1,7 @@
 using System.Text;
 using MyLib.Compression.Interface;
-using MyLib.Numbers;
+using MyLib.Enumerables;
+using MyLib.Math;
 
 namespace MyLib.Compression;
 
@@ -9,90 +10,72 @@ public class Lz77 : ICompressionAlgorithm
     public int LookaheadSize { get; set; }
     public int DictionarySize { get; set; }
 
+    private int OffsetBitLength => DictionarySize.BitLength();
+    private int SizeBitLength => LookaheadSize.BitLength();
+
     public IEnumerable<byte> Encode(IEnumerable<byte> input)
     {
         var bytes = input.ToList();
-        var encodedBytes = new List<byte>();
+        var encodedBytes = new BitList();
         var cursorIdx = 0;
         var dictionaryStartIdx = 0;
         while (cursorIdx < bytes.Count)
         {
             var (distance, length, nextChar) = FindMatch(bytes, dictionaryStartIdx, cursorIdx);
-
-            Console.WriteLine($"Dist {distance} Len {length} NextByte {Encoding.ASCII.GetString(new [] {nextChar})}");
-            
-            encodedBytes.AddRange(new[]
-            {
-                (byte)((distance >> 8) & 255),
-                (byte)(distance & 255),
-                (byte)((length >> 8) & 255),
-                (byte)(length & 255),
-                nextChar
-            });
+            encodedBytes.AppendBits(distance, OffsetBitLength);
+            encodedBytes.AppendBits(length, SizeBitLength);
+            encodedBytes.AppendBits(nextChar, 8);
 
             cursorIdx += length + 1;
             dictionaryStartIdx = (cursorIdx - DictionarySize).Max(0);
         }
 
-        return encodedBytes;
+        return encodedBytes.ToByteArray();
     }
 
     private (ushort, ushort, byte) FindMatch(List<byte> bytes, int dictionaryStartIdx, int cursorIdx)
     {
         // TODO implement a better string searching algorithm
-        for (var searchSize = LookaheadSize.Min(bytes.Count - cursorIdx - 1); searchSize > 0; searchSize--)
+        for (var matchSize = LookaheadSize; matchSize > 0; matchSize--)
         {
-            for (var dictionaryOffset = cursorIdx - dictionaryStartIdx - 1; dictionaryOffset >= 0; dictionaryOffset--)
-            {
-                var isMatch = true;
-                for (var matchIdx = 0; matchIdx < searchSize; matchIdx++)
-                {
-                    if (bytes[dictionaryStartIdx + dictionaryOffset + matchIdx] == bytes[cursorIdx + matchIdx])
-                        continue;
-                    isMatch = false;
-                }
+            var toMatch = bytes.Skip(cursorIdx).Take(matchSize);
 
-                if (isMatch)
-                {
-                    return ((ushort)dictionaryOffset, (ushort)searchSize, bytes[cursorIdx + searchSize]);
-                }
+            for (var dictionaryOffset = cursorIdx - 1; dictionaryOffset >= dictionaryStartIdx; dictionaryOffset--)
+            {
+                var searchBufferTest = bytes.Skip(dictionaryOffset).Take(matchSize);
+                var (diffOffset, _, _) = toMatch.FirstDifference(searchBufferTest);
+                if (diffOffset != -1) continue;
+                // match
+                byte nextChar = 0;
+                if (cursorIdx + matchSize < bytes.Count) nextChar = bytes[cursorIdx + matchSize];
+                return ((ushort)(cursorIdx - dictionaryOffset), (ushort)matchSize, nextChar);
             }
         }
         
+        // no match
         return (0, 0, bytes[cursorIdx]);
     }
 
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
     {
-        var bytes = input.ToList();
+        var bytes = input.ToBitList();
         var decodedBytes = new List<byte>();
         
         var idx = 0;
-        var cursorIdx = 0;
-        var dictionaryStartIdx = 0;
-        while (idx <= bytes.Count - 5)
+        while (idx <= bytes.Count - (OffsetBitLength + SizeBitLength + 8))
         {
-            var distance = bytes[idx] * 256 + bytes[idx + 1];
-            var length = bytes[idx + 2] * 256 + bytes[idx + 3];
-            var lastByte = bytes[idx + 4];
-            //Console.WriteLine($"Dist {distance} Len {length} LastByte {lastByte}");
+            var distance = bytes.ReadBits(idx, OffsetBitLength).PadLeft(2, (byte)0).ToU16();
+            var length = bytes.ReadBits(idx + OffsetBitLength, SizeBitLength).PadLeft(2, (byte)0).ToU16();
+            var lastByte = bytes.ReadBits(idx + OffsetBitLength + SizeBitLength, 8).ToByte();
 
-            if (length == 0)
-            {
-                decodedBytes.Add(lastByte);
-            }
-            else
+            if (length > 0 && distance > 0)
             {
                 for (var i = 0; i < length; i++)
-                {
-                    decodedBytes.Add(decodedBytes[dictionaryStartIdx + distance + i]);
-                }
-                decodedBytes.Add(lastByte);
+                    decodedBytes.Add(decodedBytes[^distance]);
             }
-
-            idx += 5;
-            cursorIdx += length + 1;
-            dictionaryStartIdx = (cursorIdx - DictionarySize).Max(0);
+            
+            decodedBytes.Add(lastByte);
+            idx += OffsetBitLength + SizeBitLength + 8;
         }
 
         return decodedBytes;

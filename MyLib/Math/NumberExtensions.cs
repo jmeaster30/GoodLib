@@ -1,4 +1,4 @@
-namespace MyLib.Numbers;
+namespace MyLib.Math;
 
 public static class NumberExtensions
 {
@@ -14,21 +14,26 @@ public static class NumberExtensions
 
     public static int Floor(this float value)
     {
-        return (int)Math.Floor(value);
+        return (int)System.Math.Floor(value);
     }
 
     public static int Ceiling(this double value)
     {
-        return (int) Math.Ceiling(value);
+        return (int)System.Math.Ceiling(value);
     }
 
     public static int Min(this int a, int b)
     {
-        return Math.Min(a, b);
+        return System.Math.Min(a, b);
     }
     
     public static int Max(this int a, int b)
     {
-        return Math.Max(a, b);
+        return System.Math.Max(a, b);
+    }
+
+    public static int BitLength(this int a)
+    {
+        return Math.BitLength(a);
     }
 }

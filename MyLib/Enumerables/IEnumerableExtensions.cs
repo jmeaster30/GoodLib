@@ -148,4 +148,25 @@ public static class EnumerableExtensions {
     {
         return input.Join(sep.ToString());
     }
+
+    public static byte ToByte(this IEnumerable<byte> input)
+    {
+        if (input.Count() != 1)
+            throw new ArgumentOutOfRangeException($"Byte array has too few or too many values. Expected 1 but got {input.Count()}",
+                nameof(input));
+        return input.First();
+    }
+    
+    public static ushort ToU16(this IEnumerable<byte> input)
+    {
+        if (input.Count() != 2)
+            throw new ArgumentOutOfRangeException($"Byte array has too few or too many values. Expected 2 but got {input.Count()}",
+                nameof(input));
+        return BitConverter.ToUInt16(BitConverter.IsLittleEndian ? input.Reverse().ToArray() : input.ToArray());
+    }
+
+    public static string ToHexString(this IEnumerable<byte> input)
+    {
+        return input.Select(b => b.ToString("X2")).Join(' ');
+    }
 }
