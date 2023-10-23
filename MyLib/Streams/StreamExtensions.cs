@@ -6,9 +6,7 @@ public static class StreamExtensions
 {
     public static ushort ReadU16(this Stream stream, bool skipEndianCheck = false)
     {
-        var bytes = new byte[] { 0, 0 };
-        var bytesRead = stream.Read(bytes);
-        if (bytesRead != 2) throw new IndexOutOfRangeException();
+        var bytes = stream.ReadBytes(2);
         if (BitConverter.IsLittleEndian && !skipEndianCheck)
         {
             bytes = bytes.Reverse().ToArray();
@@ -18,9 +16,7 @@ public static class StreamExtensions
     
     public static uint ReadU32(this Stream stream, bool skipEndianCheck = false)
     {
-        var bytes = new byte[] { 0, 0, 0, 0 };
-        var bytesRead = stream.Read(bytes);
-        if (bytesRead != 4) throw new IndexOutOfRangeException();
+        var bytes = stream.ReadBytes(4);
         if (BitConverter.IsLittleEndian && !skipEndianCheck)
         {
             bytes = bytes.Reverse().ToArray();
@@ -30,9 +26,7 @@ public static class StreamExtensions
     
     public static short ReadS16(this Stream stream, bool skipEndianCheck = false)
     {
-        var bytes = new byte[] { 0, 0 };
-        var bytesRead = stream.Read(bytes);
-        if (bytesRead != 2) throw new IndexOutOfRangeException();
+        var bytes = stream.ReadBytes(2);
         if (BitConverter.IsLittleEndian && !skipEndianCheck)
         {
             bytes = bytes.Reverse().ToArray();
@@ -42,14 +36,17 @@ public static class StreamExtensions
     
     public static int ReadS32(this Stream stream, bool skipEndianCheck = false)
     {
-        var bytes = new byte[] { 0, 0, 0, 0 };
-        var bytesRead = stream.Read(bytes);
-        if (bytesRead != 4) throw new IndexOutOfRangeException();
+        var bytes = stream.ReadBytes(4);
         if (BitConverter.IsLittleEndian && !skipEndianCheck)
         {
             bytes = bytes.Reverse().ToArray();
         }
         return BitConverter.ToInt32(bytes);
+    }
+
+    public static byte ReadByte(this Stream stream)
+    {
+        return stream.ReadBytes(1)[0];
     }
 
     public static byte[] ReadBytes(this Stream stream, int length)
@@ -62,9 +59,7 @@ public static class StreamExtensions
 
     public static string ReadString(this Stream stream, int length)
     {
-        var bytes = new byte[length];
-        var bytesRead = stream.Read(bytes);
-        if (bytesRead != length) throw new IndexOutOfRangeException();
+        var bytes = stream.ReadBytes(length);
         return Encoding.UTF8.GetString(bytes, 0, bytes.Length);
     }
 }
