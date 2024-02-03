@@ -9,6 +9,7 @@ on:
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_NOLOGO: true
+  OUTPUT_PATH: MyLib/bin/Release/*.nupkg
 
 jobs:
   build:
@@ -25,14 +26,14 @@ jobs:
         
 # TODO make this run the unit tests too
     - name: Build Dotnet
-      run: dotnet build
+      run: dotnet build -c release
 
     - uses: actions/upload-artifact@v3
       with:
         name: nuget
         if-no-files-found: error
         retention-days: 7
-        path: MyLib/bin/Release/*.nupkg
+        path: ${{ env.OUTPUT_PATH }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,6 +51,6 @@ jobs:
         
       - name: Publish NuGet package
         run: |
-          foreach($file in (Get-ChildItem "MyLib/bin/Release" -Recurse -Include *.nupkg)) {
+          foreach($file in (Get-ChildItem "${{ env.OUTPUT_PATH }}" -Recurse -Include *.nupkg)) {
               dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           }
