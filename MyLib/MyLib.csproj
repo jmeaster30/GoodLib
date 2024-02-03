@@ -4,6 +4,16 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
+        <Title>MyLib</Title>
+        <Authors>John Easterday</Authors>
+        <Description>A random mish-mash of extensions and classes that I found useful</Description>
+        <Copyright>2023</Copyright>
+        <PackageLicenseUrl>https://github.com/jmeaster30/MyLib/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/jmeaster30/MyLib</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Version>1.0.0-alpha</Version>
+        <PackageId>Syrency.MyLib</PackageId>
+    </PropertyGroup>
 </Project>
