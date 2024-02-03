@@ -164,6 +164,14 @@ public static class EnumerableExtensions {
                 nameof(input));
         return BitConverter.ToUInt16(BitConverter.IsLittleEndian ? input.Reverse().ToArray() : input.ToArray());
     }
+    
+    public static uint ToU32(this IEnumerable<byte> input)
+    {
+        if (input.Count() != 4)
+            throw new ArgumentOutOfRangeException($"Byte array has too few or too many values. Expected 4 but got {input.Count()}",
+                nameof(input));
+        return BitConverter.ToUInt32(BitConverter.IsLittleEndian ? input.Reverse().ToArray() : input.ToArray());
+    }
 
     public static string ToHexString(this IEnumerable<byte> input)
     {
