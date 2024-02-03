@@ -52,5 +52,5 @@ jobs:
       - name: Publish NuGet package
         run: |
           for filename in "${{ env.OUTPUT_PATH }}"; do
-            dotnet nuget push "$filename" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "$filename" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           done
