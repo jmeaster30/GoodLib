@@ -47,7 +47,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.0.0
         with:
-          dotnet-version: 6.0.2
+          dotnet-version: 6.0.321
         
       - name: Publish NuGet package
         run: |
