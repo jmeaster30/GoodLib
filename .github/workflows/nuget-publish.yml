@@ -1,0 +1,53 @@
+name: nuget-publish
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - MyLib/**
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4.0.0
+      with:
+        dotnet-version: 6.0.2
+# TODO make this run the unit tests too
+    - name: Build Dotnet
+      run: dotnet build
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: nuget
+        if-no-files-found: error
+        retention-days: 7
+        path: MyLib/bin/Release/*.nupkg
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: MyLib/bin/Release
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: 6.0.2
+        
+      - name: Publish NuGet package
+        run: |
+          foreach($file in (Get-ChildItem "MyLib/bin/Release" -Recurse -Include *.nupkg)) {
+              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
