@@ -16,8 +16,28 @@ public static class NumberExtensions
     {
         return (int)System.Math.Floor(value);
     }
+    
+    public static int Floor(this double value)
+    {
+        return (int)System.Math.Floor(value);
+    }
+    
+    public static int Floor(this decimal value)
+    {
+        return (int)System.Math.Floor(value);
+    }
+    
+    public static int Ceiling(this float value)
+    {
+        return (int)System.Math.Ceiling(value);
+    }
 
     public static int Ceiling(this double value)
+    {
+        return (int)System.Math.Ceiling(value);
+    }
+    
+    public static int Ceiling(this decimal value)
     {
         return (int)System.Math.Ceiling(value);
     }
@@ -27,7 +47,37 @@ public static class NumberExtensions
         return System.Math.Min(a, b);
     }
     
+    public static float Min(this float a, float b)
+    {
+        return System.Math.Min(a, b);
+    }
+    
+    public static double Min(this double a, double b)
+    {
+        return System.Math.Min(a, b);
+    }
+    
+    public static decimal Min(this decimal a, decimal b)
+    {
+        return System.Math.Min(a, b);
+    }
+    
     public static int Max(this int a, int b)
+    {
+        return System.Math.Max(a, b);
+    }
+    
+    public static float Max(this float a, float b)
+    {
+        return System.Math.Max(a, b);
+    }
+    
+    public static double Max(this double a, double b)
+    {
+        return System.Math.Max(a, b);
+    }
+    
+    public static decimal Max(this decimal a, decimal b)
     {
         return System.Math.Max(a, b);
     }
