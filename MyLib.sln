@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLib.Test", "MyLib.Test\My
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowCase", "ShowCase\ShowCase.csproj", "{809F7142-505C-481D-B5E2-7A64958B9EBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLib.Generators", "MyLib.Generators\MyLib.Generators.csproj", "{BA53DE9A-742C-4632-968F-8DAA94BB9FDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{809F7142-505C-481D-B5E2-7A64958B9EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{809F7142-505C-481D-B5E2-7A64958B9EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{809F7142-505C-481D-B5E2-7A64958B9EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA53DE9A-742C-4632-968F-8DAA94BB9FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA53DE9A-742C-4632-968F-8DAA94BB9FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA53DE9A-742C-4632-968F-8DAA94BB9FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA53DE9A-742C-4632-968F-8DAA94BB9FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,42 @@
+[
+  {
+    "functionName": "Floor",
+    "returnType": "int",
+    "paramGenType": "single",
+    "paramTypes": ["float", "double", "decimal"],
+    "parameterNames": ["value"],
+    "body": "return (int)System.Math.Floor(value);"
+  },
+  {
+    "functionName": "Ceiling",
+    "returnType": "int",
+    "paramGenType": "single",
+    "paramTypes": ["float", "double", "decimal"],
+    "parameterNames": ["value"],
+    "body": "return (int)System.Math.Ceiling(value);"
+  },
+  {
+    "functionName": "Round",
+    "returnType": "int",
+    "paramGenType": "single",
+    "paramTypes": ["float", "double", "decimal"],
+    "parameterNames": ["value"],
+    "body": "return (int)System.Math.Round(value);"
+  },
+  {
+    "functionName": "Max",
+    "returnType": "_BIGGEST_OF_INPUT_",
+    "paramGenType": "combo",
+    "paramTypes": ["byte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "decimal"],
+    "parameters": ["a", "b"],
+    "body": "return a > b ? a : b;"
+  },
+  {
+    "functionName": "Min",
+    "returnType": "_BIGGEST_OF_INPUT_",
+    "paramGenType": "combo",
+    "paramTypes": ["byte", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "decimal"],
+    "parameters": ["a", "b"],
+    "body": "return a < b ? a : b;"
+  }
+]
