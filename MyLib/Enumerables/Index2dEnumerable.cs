@@ -88,6 +88,22 @@ public class Index2dEnumerator : IEnumerator<(uint, uint)>
 
     object IEnumerator.Current => Current;
 
+    public void SetIndex(uint index)
+    {
+        _x = index % _width;
+        _y = index / _height;
+    }
+
+    public void SetX(uint x)
+    {
+        _x = x;
+    }
+
+    public void SetY(uint y)
+    {
+        _y = y;
+    }
+
     public void Dispose()
     {
         GC.SuppressFinalize(this);
