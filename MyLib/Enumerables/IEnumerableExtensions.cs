@@ -63,6 +63,40 @@ public static class EnumerableExtensions {
         return results;
     }
 
+    public static bool AnyInRange<T>(this IEnumerable<T> enumerable, int from, int to, Func<T, bool> predicate)
+    {
+        var index = 0;
+        foreach (var value in enumerable)
+        {
+            if (index >= from && index < to && predicate(value))
+            {
+                return true;
+            }
+
+            index += 1;
+            if (index >= to) break;
+        }
+
+        return false;
+    }
+    
+    public static bool AllInRange<T>(this IEnumerable<T> enumerable, int from, int to, Func<T, bool> predicate)
+    {
+        var index = 0;
+        foreach (var value in enumerable)
+        {
+            if (index >= from && index < to && !predicate(value))
+            {
+                return false;
+            }
+
+            index += 1;
+            if (index >= to) break;
+        }
+
+        return true;
+    }
+    
     public static (int, T?, T?) FirstDifference<T>(this IEnumerable<T> left, IEnumerable<T> right) where T : struct
     {
         var index = 0;
