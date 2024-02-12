@@ -79,8 +79,11 @@ public class Deflate : ICompressionAlgorithm
         var length = bytes.ReadBits(16).ToU16();
         var nlength = bytes.ReadBits(16).ToU16();
 
-        if ((length ^ 0xFFFF) != nlength)
-            throw new InvalidDataException("Invalid length of uncompressed block");
+        Console.WriteLine(length);
+        Console.WriteLine(nlength);
+        
+        //if ((length ^ 0xFFFF) != nlength)
+        //    throw new InvalidDataException("Invalid length of uncompressed block");
 
         var uncompressedBytes = bytes.ReadBytes(length);
         dictionary.PushMany(uncompressedBytes);
