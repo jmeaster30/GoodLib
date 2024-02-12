@@ -75,6 +75,8 @@ public class Deflate : ICompressionAlgorithm
     private static void DecodeUncompressedBlock(BitList bytes, BitList result, RingBuffer<byte> dictionary)
     {
         bytes.ConsumeToNextByteBoundary();
+        
+        Console.WriteLine($"UNCOMPRESSED: {bytes.PeekBits(16):X2} {bytes.PeekBits(32)[2..]:X2}");
 
         var length = bytes.ReadBits(16).ToU16();
         var nlength = bytes.ReadBits(16).ToU16();
