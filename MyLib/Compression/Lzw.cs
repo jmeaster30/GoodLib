@@ -83,6 +83,7 @@ public class Lzw : ICompressionAlgorithm
 
     public IEnumerable<byte> Encode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var (currentCodeValue, currentCodeLength) = ClearCodewords();
 
         var buffer = Array.Empty<byte>();
@@ -126,7 +127,7 @@ public class Lzw : ICompressionAlgorithm
 
     private static int GetBits(BitList inputBits, int offset, int amount)
     {
-        var bits = inputBits.ReadBits(offset, amount).PadLeft(4, (byte) 0);
+        var bits = inputBits.ReadBitsAt(offset, amount).PadLeft(4, (byte) 0);
         if (BitConverter.IsLittleEndian)
             bits = bits.Reverse();
         return BitConverter.ToInt32(bits.ToArray());
@@ -134,6 +135,7 @@ public class Lzw : ICompressionAlgorithm
 
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var (currentCodeValue, currentCodeLength) = ClearValues();
         var currentBitOffset = 0;
 

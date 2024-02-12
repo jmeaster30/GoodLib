@@ -4,9 +4,10 @@ using MyLib.Math;
 namespace MyLib.Enumerables;
 
 // TODO this needs to work better the api is a little weird
-public class BitList : IEnumerable
+public class BitList : IReadOnlyList<bool>
 {
     private List<bool> Contents { get; set; } = new();
+    private int Index { get; set; }
 
     public BitList()
     {}
@@ -16,7 +17,7 @@ public class BitList : IEnumerable
         Contents = contents.SelectMany(x =>
         {
             var res = new List<bool>();
-            for (int i = 7; i >= 0; i--)
+            for (var i = 7; i >= 0; i--)
             {
                 res.Add(((x >> i) & 1) == 1);
             }
@@ -26,6 +27,11 @@ public class BitList : IEnumerable
 
     public int Count => Contents.Count;
 
+    IEnumerator<bool> IEnumerable<bool>.GetEnumerator()
+    {
+        return Contents.GetEnumerator();
+    }
+
     public IEnumerator GetEnumerator()
     {
         return Contents.GetEnumerator();
@@ -33,9 +39,17 @@ public class BitList : IEnumerable
 
     public void AppendBits(int value, int bitLength)
     {
-        for (int shift = bitLength - 1; shift >= 0; shift--)
+        for (var shift = bitLength - 1; shift >= 0; shift--)
         {
             Contents.Add(((value >> shift) & 1) == 1);
+        }
+    }
+
+    public void AppendBytes(IEnumerable<byte> bytes)
+    {
+        foreach (var b in bytes)
+        {
+            AppendBits(b, 8);
         }
     }
 
@@ -44,11 +58,56 @@ public class BitList : IEnumerable
         Contents.RemoveRange(Contents.Count - amount, amount);
     }
 
-    public byte[] ReadBits(int index, int count)
+    public void ConsumeToNextByteBoundary()
+    {
+        Index = Index + 8 - Index % 8;
+    }
+
+    public void ConsumeBits(int count)
+    {
+        Index += count;
+    }
+    
+    public byte[] PeekBits(int count)
+    {
+        var value = Contents.GetRange(Index, count);
+        return ToByteArray(value.PadLeft((value.Count / 8.0).Ceiling() * 8, false));
+    }
+    
+    public byte[] PeekBitsAt(int index, int count)
     {
         try
         {
             var value = Contents.GetRange(index, count);
+            return ToByteArray(value.PadLeft((value.Count / 8.0).Ceiling() * 8, false));
+        }
+        catch
+        {
+            Console.WriteLine($"Count: {Contents.Count} Offset: {index} Amount: {count}");
+            throw;
+        }
+    }
+    
+    public byte[] ReadBits(int count)
+    {
+        var value = Contents.GetRange(Index, count);
+        Index += value.Count;
+        return ToByteArray(value.PadLeft((value.Count / 8.0).Ceiling() * 8, false));
+    }
+
+    public byte[] ReadBytes(int count)
+    {
+        var value = Contents.GetRange(Index, count * 8);
+        Index += value.Count;
+        return ToByteArray(value); // don't need the padding since it should always be byte aligned 
+    }
+
+    public byte[] ReadBitsAt(int index, int count)
+    {
+        try
+        {
+            var value = Contents.GetRange(index, count);
+            Index = index + value.Count;
             return ToByteArray(value.PadLeft((value.Count / 8.0).Ceiling() * 8, false));
         }
         catch
@@ -78,6 +137,8 @@ public class BitList : IEnumerable
                 return result;
             }).ToArray();
     }
+
+    public bool this[int index] => Contents[index];
 }
 
 public static class BitListExtensions {

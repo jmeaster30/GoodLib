@@ -7,6 +7,7 @@ public class Ascii85 : ICompressionAlgorithm
 {
     public IEnumerable<byte> Encode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var chunked = input.Chunk(4);
         var results = new List<byte>();
         foreach (var chunk in chunked)
@@ -31,6 +32,7 @@ public class Ascii85 : ICompressionAlgorithm
 
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var filtered = input.Where(x => !char.IsWhiteSpace((char)x));
         if (System.Text.Encoding.ASCII.GetString(filtered.Skip(filtered.Count() - 2).Take(2).ToArray()) != "~>")
         {

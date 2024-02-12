@@ -13,7 +13,7 @@
         <PackageLicenseUrl>https://github.com/jmeaster30/MyLib/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/jmeaster30/MyLib</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <Version>1.0.4-alpha</Version>
+        <Version>1.0.5-alpha</Version>
         <PackageId>Syrency.MyLib</PackageId>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>

@@ -3,6 +3,16 @@ using System.Security.Cryptography;
 namespace MyLib.Enumerables;
 
 public static class EnumerableExtensions {
+    public static IEnumerable<T> AddFill<T>(this IEnumerable<T> a, int from, int to, Func<int, T> function)
+    {
+        var results = new List<T>(a);
+        for (var i = from; i < to; i++)
+        {
+            results.Add(function(i));
+        }
+        return results;
+    }
+    
     public static IEnumerable<T> PadRight<T>(this IEnumerable<T> a, int amount, T value)
     {
         var result = new List<T>();

@@ -26,11 +26,13 @@ public class AsciiHex : ICompressionAlgorithm
     
     public IEnumerable<byte> Encode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         return input.SelectMany(x => new []{ToHex(x / 16), ToHex(x % 16)});
     }
 
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
-    { 
+    {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var filtered = input.Where(x => !char.IsWhiteSpace((char)x)).ToList();
         if (filtered.Any(x => x is not ((>= 48 and <= 57) or (>= 65 and <= 70) or (>= 97 and <= 102))))
         {

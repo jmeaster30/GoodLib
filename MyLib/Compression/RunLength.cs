@@ -7,6 +7,7 @@ public class RunLength : ICompressionAlgorithm
 {
     public IEnumerable<byte> Encode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         // encoding
         // group same bytes into groups of (byte value, run length)
         // group groups of run length = 1 into chunks of 128
@@ -56,6 +57,7 @@ public class RunLength : ICompressionAlgorithm
 
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         // decoding
         // length byte -> run
         // if length is 0 to 127 then copy next length + 1 bytes literally

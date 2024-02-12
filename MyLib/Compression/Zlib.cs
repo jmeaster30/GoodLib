@@ -18,15 +18,11 @@ public class Zlib : ICompressionAlgorithm
         encoded.AddRange(deflate.Encode(input));
         return encoded;
     }
-
-    //private static (int, int)? FindBestMatch()
-    //{
-    //    
-    //}
-
+    
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
     {
-        if (input.Count() < 2) throw new ArgumentException("Unexpected length of zlib bytes", nameof(input));
+        var inputCount = input.Count();
+        if (inputCount < 2) throw new ArgumentException("Unexpected length of zlib bytes", nameof(input));
         var flags = input.Take(2).ToList();
 
         var compressionMethod = flags[0] & 8;
@@ -35,17 +31,17 @@ public class Zlib : ICompressionAlgorithm
         var compressionLevel = flags[1] >> 6 & 3;
         var check = flags[0] * 256 + flags[1];
         
-        Console.WriteLine($"Method {compressionMethod}");
-        Console.WriteLine($"CMINFO {compressionInfo}");
-        Console.WriteLine($"Dictionary {dictionaryFlag}");
-        Console.WriteLine($"CompressionLevel {compressionLevel}");
-        Console.WriteLine($"Check Number {check} {check % 31}");
+        //Console.WriteLine($"Method {compressionMethod}");
+        //Console.WriteLine($"CMINFO {compressionInfo}");
+        //Console.WriteLine($"Dictionary {dictionaryFlag}");
+        //Console.WriteLine($"CompressionLevel {compressionLevel}");
+        //Console.WriteLine($"Check Number {check} {check % 31}");
         
         if (check % 31 != 0) throw new ArgumentException("Bad zlib header", nameof(input));
-        if (compressionMethod != 8)
+        if (compressionMethod != 8 || compressionInfo > 7)
             throw new ArgumentException("Unexpected compression method in zlib header", nameof(input));
 
         var deflate = new Deflate { WindowSize = 1 << (compressionInfo + 8) };
-        return deflate.Decode(input.Skip(2));
+        return deflate.Decode(input.Skip(2).Take(inputCount - 6));
     }
 }

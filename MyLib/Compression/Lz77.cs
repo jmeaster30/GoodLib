@@ -15,6 +15,7 @@ public class Lz77 : ICompressionAlgorithm
 
     public IEnumerable<byte> Encode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var bytes = input.ToList();
         var encodedBytes = new BitList();
         var cursorIdx = 0;
@@ -58,15 +59,16 @@ public class Lz77 : ICompressionAlgorithm
 
     public IEnumerable<byte> Decode(IEnumerable<byte> input)
     {
+        if (input == null) throw new ArgumentNullException(nameof(input));
         var bytes = input.ToBitList();
         var decodedBytes = new List<byte>();
         
         var idx = 0;
         while (idx <= bytes.Count - (OffsetBitLength + SizeBitLength + 8))
         {
-            var distance = bytes.ReadBits(idx, OffsetBitLength).PadLeft(2, (byte)0).ToU16();
-            var length = bytes.ReadBits(idx + OffsetBitLength, SizeBitLength).PadLeft(2, (byte)0).ToU16();
-            var lastByte = bytes.ReadBits(idx + OffsetBitLength + SizeBitLength, 8).ToByte();
+            var distance = bytes.ReadBitsAt(idx, OffsetBitLength).PadLeft(2, (byte)0).ToU16();
+            var length = bytes.ReadBitsAt(idx + OffsetBitLength, SizeBitLength).PadLeft(2, (byte)0).ToU16();
+            var lastByte = bytes.ReadBitsAt(idx + OffsetBitLength + SizeBitLength, 8).ToByte();
 
             if (length > 0 && distance > 0)
             {
